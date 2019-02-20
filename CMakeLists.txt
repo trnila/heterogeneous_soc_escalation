@@ -7,6 +7,6 @@ find_package(rpmsg REQUIRED)
 
 include_directories(.)
 
-add_firmware(root root.c pin_mux.c) 
+add_firmware(root root.c) 
 target_link_libraries(root mcuxpressosdk)
 

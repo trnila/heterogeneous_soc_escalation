@@ -20,20 +20,15 @@ int is_valid_addr(uint64_t phys_addr) {
    return is_aligned(phys_addr) && phys_addr >= DDR_start && phys_addr < DDR_end; 
 }
 
-
-
-
-
 struct cred {
-   uint32_t usage;
-   volatile uint32_t          uid;            /* real UID of the task */
-   volatile uint32_t          gid;            /* real GID of the task */
-   volatile        uint32_t          suid;           /* saved UID of the task */
-   volatile        uint32_t          sgid;           /* saved GID of the task */
-   volatile        uint32_t          euid;           /* effective UID of the task */
-   volatile        uint32_t          egid;           /* effective GID of the task */
-   volatile 			uint32_t   fsuid;
-
+   uint32_t usage; /* refcounter */
+   uint32_t          uid;            /* real UID of the task */
+   uint32_t          gid;            /* real GID of the task */
+   uint32_t          suid;           /* saved UID of the task */
+   uint32_t          sgid;           /* saved GID of the task */
+   uint32_t          euid;           /* effective UID of the task */
+   uint32_t          egid;           /* effective GID of the task */
+   uint32_t          fsuid;
 };
 
 void DumpHex(const void* data, size_t size) {

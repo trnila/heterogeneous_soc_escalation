@@ -7,9 +7,6 @@ find_package(rpmsg REQUIRED)
 
 include_directories(.)
 
-add_firmware(bare bare.c pin_mux.c) 
-target_link_libraries(bare mcuxpressosdk)
-
 add_firmware(root root.c pin_mux.c) 
 target_link_libraries(root mcuxpressosdk)
 

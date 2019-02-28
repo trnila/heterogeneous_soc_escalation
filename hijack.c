@@ -5,15 +5,13 @@
 #include <stdlib.h>
 
 int main() {
-	int d = open("/dev/test", O_RDWR);
-
 	for(;;) {
-		if(open("/secured", O_RDWR) >= 0) {
+		if(open("/etc/shadow", O_RDWR) >= 0) {
 			printf("root gained\n");
 			system("bash");
 			return 1;
 		}
-		perror("/secured: ");
+		perror("open(/etc/shadow) = ");
 		usleep(100 * 1000);
 	}
 }

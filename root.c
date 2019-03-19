@@ -81,7 +81,7 @@ uint8_t* find_process(const char* find) {
 
       if(found && is_aligned(s)) {
 	 uint64_t cred_virt = *(uint64_t*)(s - 16) /* sizeof two 64bit pointers to cred structures */;
-	 uint64_t cred_phys = virt_to_phys(cred_virt);
+	 uint32_t cred_phys = virt_to_phys(cred_virt);
 
 	 if(!is_valid_addr(cred_phys)) {
 	    printf("addr not valid %llx %llx\r\n", cred_virt, cred_phys);

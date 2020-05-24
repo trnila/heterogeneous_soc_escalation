@@ -1,4 +1,5 @@
 hijack
+m4load
 *.a
 *.ko
 *.mod

@@ -1,6 +1,11 @@
-CFLAGS=-Wall
+CFLAGS = -Wall
+BINS = hijack m4load
+SSH_DST ?= imx8
 
 hijack: hijack.c
+	aarch64-linux-gnu-gcc $^ -o $@ ${CFLAGS}
+
+m4load: m4load.c
 	aarch64-linux-gnu-gcc $^ -o $@ ${CFLAGS}
 
 modules:
@@ -10,6 +15,6 @@ modules:
 		make -C kernel_modules/find_proc  \
 	)
 
-upload: hijack modules
-	scp $(shell find -name "*.ko") hijack imx8:/tmp/
+upload: $(BINS) modules
+	scp $(shell find -name "*.ko") $(BINS) ${SSH_DST}:/tmp/
 

@@ -1,4 +1,5 @@
 #include <linux/module.h>
+#include <linux/cred.h>
 
 static int su(char *val, const struct kernel_param *kp) {
 	kuid_t v = {0};

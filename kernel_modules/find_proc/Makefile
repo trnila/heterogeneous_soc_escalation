@@ -1,6 +1,5 @@
 ifneq ($(KERNELRELEASE),)
-obj-m  := test.o
-obj-m  := test2.o
+obj-m  := find_proc.o
 
 else
 KDIR ?= /lib/modules/`uname -r`/build

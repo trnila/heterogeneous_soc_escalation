@@ -1,2 +1,9 @@
-build
 hijack
+*.a
+*.ko
+*.mod
+*.mod.c
+*.o
+*.cmd
+modules.order
+Module.symvers

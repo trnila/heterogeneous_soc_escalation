@@ -18,7 +18,7 @@ int main() {
     printf("uid = %d\n", uid);
     if(uid == 0) {
       printf("root gained\n");
-      system("bash");
+      system("/bin/sh");
       return 1;
     }
     usleep(100 * 1000);

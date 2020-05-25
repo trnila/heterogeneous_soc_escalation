@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+const uint32_t CCM_TARGET_ROOT1 = 0x30388080;
+const uint32_t CCM_TARGET_ROOT_ENABLE_SHIFT = 28;
 const uint32_t SRC_M4RCR = 0x3039000C;
 const uint32_t TCM = 0x7e0000;
 const uint32_t TCM_SIZE = 256 * 1024;
@@ -42,7 +44,11 @@ int main(int argc, char** argv) {
     // map SRC_M4RCR and TCM memory
     volatile uint32_t *reg = (volatile uint32_t*) map_mem(memfd, SRC_M4RCR, getpagesize());
     volatile uint8_t *tcm = map_mem(memfd, TCM, TCM_SIZE);
+    volatile uint32_t *ccm = (volatile uint32_t*) map_mem(memfd, 0x30388080, getpagesize());
     close(memfd);
+
+    // enable M4 clk
+    *ccm |= 1 << CCM_TARGET_ROOT_ENABLE_SHIFT;
 
     int fd = open(argv[1], O_RDONLY);
     if(!fd) {

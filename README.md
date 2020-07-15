@@ -27,3 +27,5 @@ stm$ echo start > /sys/class/remoteproc/remoteproc0/state
 ```c
 stm$ watch tail /sys/kernel/debug/remoteproc/remoteproc0/trace0
 ```
+
+<p align=center><a href="https://asciinema.org/a/w0xi5SuV4lHsRXk6YLI06DLyt" target="_blank"><img src="https://asciinema.org/a/w0xi5SuV4lHsRXk6YLI06DLyt.svg" width="600px"></a></p>

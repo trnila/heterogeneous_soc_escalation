@@ -1,10 +1,12 @@
-hijack
-m4load
+*.aarch64
+*.arm32
 *.a
 *.ko
 *.mod
 *.mod.c
 *.o
 *.cmd
+*.bin
+*.elf
 modules.order
 Module.symvers

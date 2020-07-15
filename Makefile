@@ -15,5 +15,6 @@ firmware:
 	make -C firmware
 
 clean:
+	rm *.aarch64 *.arm32
 	make -C firmware clean
 

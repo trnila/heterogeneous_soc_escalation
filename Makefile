@@ -1,6 +1,6 @@
 CFLAGS = -Wall
 BINS = hijack.aarch64 hijack.arm32 \
-			 m4load.aarch64
+			 imx_m4load.aarch64
 
 all: $(BINS) firmware
 

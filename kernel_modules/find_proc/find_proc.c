@@ -5,9 +5,9 @@ static int proc_addresses(char *val, const struct kernel_param *kp) {
   return scnprintf(
       val,
       PAGE_SIZE,
-      "current task_struct: 0x%llx\ncred: 0x%llx",
-      virt_to_phys(current),
-      virt_to_phys(current->cred)
+      "current task_struct: %px\ncred: %px",
+      (void*) virt_to_phys(current),
+      (void*) virt_to_phys(current->cred)
   );
 }
 

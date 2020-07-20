@@ -86,6 +86,6 @@ void escalate_process(const char* procname) {
 
 int main() {
   printf("=== ROOT ===\r\n");
-  escalate_process("hijack");
+  escalate_process("victim");
   for(;;);
 }

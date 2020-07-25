@@ -1,20 +1,2 @@
-CFLAGS = -Wall
-BINS = victim.aarch64 victim.arm32 \
-			 imx_m4load.aarch64
-
-all: $(BINS) firmware
-
-%.aarch64: %.c
-	aarch64-linux-gnu-gcc $^ -o $@ $(CFLAGS)
-
-%.arm32: %.c
-	arm-linux-gnueabihf-gcc $^ -o $@ $(CFLAGS)
-
-.PHONY: firmware
-firmware:
-	make -C firmware
-
-clean:
-	rm *.aarch64 *.arm32
-	make -C firmware clean
-
+all: imx_m4load.aarch64
+include common.mk

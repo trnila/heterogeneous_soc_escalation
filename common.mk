@@ -7,7 +7,8 @@ FIRMWARE_CFLAGS=-mcpu=cortex-m4 \
 			 -nostartfiles \
 			 -g \
 			 -I $(ROOT_DIR)/firmware/CMSIS/Include/ \
-			 -I $(ROOT_DIR)/firmware/MIMX8MQ6/
+			 -I $(ROOT_DIR)/firmware/MIMX8MQ6/ \
+			 -I $(ROOT_DIR)/firmware/STM32MP157C/
 
 FIRMWARE_LDFLAGS=-lc \
 			 -flto \

@@ -1,10 +1,18 @@
 #include <stdio.h>
 
-char rproc_trace[2048];
+char rproc_trace[2048*20];
 static int rproc_trace_offset;
 
 int _write(int fd, char *buf, int len) {
 	for(int i = 0; i < len; i++) {
+/*
+		const uint32_t UART4_BASE = 0x40010000;
+		volatile uint32_t *UART4_ISR = (volatile uint32_t*) (UART4_BASE + 0x1C);
+		while(!(*UART4_ISR & (1 << 7)));
+		*((volatile uint32_t*) (UART4_BASE + 0x28)) = buf[i];
+		while(!(*UART4_ISR & (1 << 6)));
+*/
+
 		rproc_trace[rproc_trace_offset] = buf[i];
 		rproc_trace[rproc_trace_offset++ + 1] = '\0';
 

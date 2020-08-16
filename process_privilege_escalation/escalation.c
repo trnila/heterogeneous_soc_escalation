@@ -28,6 +28,12 @@ int is_valid_addr(uint64_t phys_addr) {
   return is_aligned(phys_addr) && phys_addr >= DDR_start && phys_addr < DDR_end;
 }
 
+void HardFault_Handler() {
+  printf("Hard Fault\r\n");
+
+  for(;;);
+}
+
 struct cred {
   volatile uint32_t usage; /* refcounter */
   volatile  uint32_t          uid;            /* real UID of the task */
@@ -40,6 +46,12 @@ struct cred {
 };
 
 void escalate_process(const char* procname) {
+#ifdef CPU_MIMX8MQ6DVAJZ
+  // enable triggering hard fault on RDC violation
+  // IOMUXC_GPR_GPR10
+  *(volatile uint32_t *) 0x30340028 |= 0xc;
+#endif
+
   int len = strlen(procname);
   for(uint32_t addr = DDR_start; addr < DDR_end; addr++) {
     if((addr & 0x64fffff) == 0x6400000) {

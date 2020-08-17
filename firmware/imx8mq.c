@@ -60,7 +60,10 @@ extern uint8_t __bss_start__;
 extern uint8_t __bss_end__;
 extern int main();
 
+__attribute__((naked))
 void Reset_Handler(void) {
+  __set_MSP((uint32_t) &__StackTop);
+
  // copy .data section from flash to sram
   uint8_t *src = &__etext;
   uint8_t *dst = &__data_start__;

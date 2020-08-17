@@ -29,6 +29,9 @@ void uart_init() {
   // reset UART
   UART2->UCR2 &= ~UART_UCR2_SRST_MASK;
 
+  // use muxed RX input
+  UART2->UCR3 |= UART_UCR3_RXDMUXSEL_MASK;
+
   // set reference frekvency divider to 1
   UART2->UFCR = (UART2->UFCR & ~UART_UFCR_RFDIV_MASK) | UART_UFCR_RFDIV(0b101); 
   // set baud rate
@@ -38,6 +41,7 @@ void uart_init() {
   // configure parameters and enable
   UART2->UCR2 = UART_UCR2_SRST_MASK
     | UART_UCR2_TXEN_MASK
+    | UART_UCR2_RXEN_MASK
     | UART_UCR2_WS_MASK
     | UART_UCR2_IRTS_MASK;
   UART2->UCR1 = UART_UCR1_UARTEN_MASK;
@@ -50,6 +54,12 @@ size_t _write(int fd, char *buffer, size_t len) {
     UART2->UTXD = buffer[i];
   }
   return len;
+}
+
+ssize_t _read(int fd, char* buf, size_t count) {
+  while(!(UART2->USR2 & 1)) {}
+  *buf = UART2->URXD;
+  return 1;
 }
 
 extern void __StackTop(void);

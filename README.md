@@ -7,17 +7,17 @@ Build the firmwares and the victim process with:
 $ make
 ```
 
-1. copy particular `victim` program to the board
-2. run `victim` under the user with uid 1000.
+1. copy particular `victim_process` program to the board
+2. run `victim_process` under the user with uid 1000.
 3. run the `escalate` firmware according to the board instruction
 
 ## NXP i.MX8MQ
 
 ## STM32MP1
 
-1. copy `firmware/escalation.stm32mp1.elf` to the board's `/lib/firmware/rproc-m4-fw`
+1. copy `process_privilege_escalation/escalation.stm32mp1.elf` to the board's `/lib/firmware/rproc-m4-fw`
 ```
-pc$ scp firmware/escalation.stm32mp1.elf stm:/lib/firmware/rproc-m4-fw
+pc$ scp process_privilege_escalation/escalation.stm32mp1.elf stm:/lib/firmware/rproc-m4-fw
 ```
 2. start the core via remoteproc
 ```c
